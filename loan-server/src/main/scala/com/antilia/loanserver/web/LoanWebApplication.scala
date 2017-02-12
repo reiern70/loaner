@@ -1,4 +1,4 @@
-package com.antilia.loanserver
+package com.antilia.loanserver.web
 
 import org.apache.wicket.Page
 import org.apache.wicket.protocol.http.WebApplication

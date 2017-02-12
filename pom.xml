@@ -10,7 +10,14 @@
     <modules>
         <module>loan-server</module>
         <module>loan-command-line-client</module>
+        <module>loan-common</module>
     </modules>
 
-
+    <properties>
+        <encoding>UTF-8</encoding>
+        <scala.tools.version>2.11</scala.tools.version>
+        <scala.version>2.11.7</scala.version>
+        <spring.version>4.2.2.RELEASE</spring.version>
+        <hibernate.version>4.2.7.SP1</hibernate.version>
+    </properties>
 </project>
