@@ -1,4 +1,4 @@
-package com.antilia.loanserver
+package com.antilia.loanserver.web
 
 import org.apache.wicket.markup.html.WebPage
 import org.apache.wicket.markup.html.basic.Label

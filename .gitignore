@@ -148,3 +148,4 @@ local.properties
 /loan-parent.iml
 /loan-server/loan-server.iml
 /loan-command-line-client/loan-command-line-client.iml
+/loan-common/loan-common.iml
