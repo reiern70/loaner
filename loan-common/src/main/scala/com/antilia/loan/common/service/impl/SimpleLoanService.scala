@@ -36,6 +36,8 @@ class SimpleLoanService extends ILoanService {
         case Some(loaner) =>
           usedLoaners.add(loaner)
           previousLoaner = loaner
+          //TODO: this logic is good for people that ask for money not good for loaners...
+          // introduce something limiting ammout of loaned money,
           val toDeduce = request.getAmount - amount
           if(loaner.deduceAmount(toDeduce)) {
             amount += toDeduce
@@ -43,6 +45,7 @@ class SimpleLoanService extends ILoanService {
             amount += loaner.deduceAllAmount()
           }
         case None =>
+          loanerDataDao.revertLoanDataAfterLoanGrated(usedLoaners)
           throw new LoanComputationException("Unable to full-fill loan: not enough loaners")
       }
     }
@@ -59,6 +62,8 @@ class SimpleLoanService extends ILoanService {
     answer.setTotalPayment(totalRepayment)
     answer.setCurrency(request.getCurrency)
     answer.setMonthlyPayment(monthlyPayment)
+    // update data on database
+    loanerDataDao.storeLoanDataAfterLoanGrated(usedLoaners)
     answer
   }
 }
