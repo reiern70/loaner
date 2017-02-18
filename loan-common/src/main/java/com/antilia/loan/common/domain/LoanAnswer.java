@@ -100,4 +100,16 @@ public class LoanAnswer extends EntityBase {
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "LoanAnswer{" +
+                "user=" + user +
+                ", answerDate=" + answerDate +
+                ", rate=" + rate +
+                ", monthlyPayment=" + monthlyPayment +
+                ", totalPayment=" + totalPayment +
+                ", currency=" + currency +
+                '}';
+    }
 }

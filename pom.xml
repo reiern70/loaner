@@ -19,5 +19,6 @@
         <scala.version>2.11.7</scala.version>
         <spring.version>4.2.2.RELEASE</spring.version>
         <hibernate.version>4.2.7.SP1</hibernate.version>
+        <junit.version>4.12</junit.version>
     </properties>
 </project>

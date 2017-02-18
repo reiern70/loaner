@@ -8,6 +8,7 @@
         <class>com.antilia.loan.common.domain.LoanerData</class>
         <class>com.antilia.loan.common.domain.LoanRequest</class>
         <class>com.antilia.loan.common.domain.LoanAnswer</class>
+        <class>com.antilia.loan.common.domain.Script</class>
 
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
