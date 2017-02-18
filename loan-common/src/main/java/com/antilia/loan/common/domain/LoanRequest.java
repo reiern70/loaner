@@ -5,13 +5,17 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames={"user_id","currency"})})
 public class LoanRequest extends EntityBase {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private User user;
     private long amount;
-
+    // in months
+    @Column(nullable = false)
+    private int period;
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
     private Currency currency;
@@ -51,6 +55,14 @@ public class LoanRequest extends EntityBase {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public int getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(int period) {
+        this.period = period;
     }
 
     @Override

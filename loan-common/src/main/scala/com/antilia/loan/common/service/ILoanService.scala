@@ -7,7 +7,7 @@ import com.antilia.loan.common.domain.{LoanAnswer, LoanRequest}
   *
   * @param message The reason for the failure...
   */
-class LoanComputationExcepation(message: String) extends RuntimeException(message)
+class LoanComputationException(message: String) extends RuntimeException(message)
 
 trait ILoanService {
 

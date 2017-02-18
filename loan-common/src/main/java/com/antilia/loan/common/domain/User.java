@@ -74,4 +74,14 @@ public class User extends EntityBase {
         result = 31 * result + role.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

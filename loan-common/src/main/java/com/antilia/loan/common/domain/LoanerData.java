@@ -16,11 +16,11 @@ import java.util.List;
         indexes = {
                 @Index(name="LoanerData_user_lastLoanDate_index", columnNames = {"user_id", "lastLoanDate"}),
                 @Index(name="LoanerData_currency_lastLoanDate_index", columnNames = {"currency", "lastLoanDate"}),
-                @Index(name="LoanerData_currency_rate_index", columnNames = {"currency", "rate"})
+                @Index(name="LoanerData_currency_rate_lastLoanDate_index", columnNames = {"currency", "rate", "lastLoanDate"})
         })
 public class LoanerData  extends EntityBase {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
     private double rate;
@@ -35,6 +35,11 @@ public class LoanerData  extends EntityBase {
     @Column(nullable = false)
     private Currency currency;
 
+    /**
+     * Flag used to mark a loaner as being currently used to calculate a loan request. So, this user is not part
+     * of any other loand computation at the same time.
+     */
+    private boolean beingUsedForLoan = false;
 
     public LoanerData() {
     }
@@ -79,6 +84,28 @@ public class LoanerData  extends EntityBase {
         this.currency = currency;
     }
 
+    public boolean deduceAmount(long amount) {
+        if(amount <= this.available) {
+            available = available - amount;
+            return true;
+        }
+        return false;
+    }
+
+    public long deduceAllAmount() {
+        long temp = this.available;
+        available = 0L;
+        return temp;
+    }
+
+    public boolean isBeingUsedForLoan() {
+        return beingUsedForLoan;
+    }
+
+    public void setBeingUsedForLoan(boolean beingUsedForLoan) {
+        this.beingUsedForLoan = beingUsedForLoan;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -112,8 +139,21 @@ public class LoanerData  extends EntityBase {
             loanerData.setLastLoanDate(new Date());
             loanerData.setRate(Double.parseDouble(values[1]));
             loanerData.setAvailable(Long.parseLong(values[2]));
+            loanerData.setCurrency(Currency.BritishPounds);
+            loanerDatas.add(loanerData);
         }
         return loanerDatas;
+    }
+
+    @Override
+    public String toString() {
+        return "LoanerData{" +
+                "user=" + user +
+                ", rate=" + rate +
+                ", available=" + available +
+                ", lastLoanDate=" + lastLoanDate +
+                ", currency=" + currency +
+                '}';
     }
 }
 
