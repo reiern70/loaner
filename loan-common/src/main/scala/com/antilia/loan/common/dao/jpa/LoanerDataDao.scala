@@ -53,7 +53,7 @@ class LoanerDataDao extends AbstractDao[LoanerData](classOf[LoanerData]) with IL
     * @return
     */
   @Transactional
-  override def storeLoanDataAfterLoanGrated(data: util.List[LoanerData]): Unit = {
+  override def storeLoanDataAfterLoanGrated(data: util.Collection[LoanerData]): Unit = {
     for(e <- data) {
       e.setBeingUsedForLoan(false)
       e.setLastLoanDate(new Date())
@@ -68,7 +68,7 @@ class LoanerDataDao extends AbstractDao[LoanerData](classOf[LoanerData]) with IL
     * @return
     */
   @Transactional
-  override def revertLoanDataAfterLoanGrated(data: util.List[LoanerData]): Unit = {
+  override def revertLoanDataAfterLoanGrated(data: util.Collection[LoanerData]): Unit = {
     for(e <- data) {
       loadById(e.getId) match {
         case Some(a) =>

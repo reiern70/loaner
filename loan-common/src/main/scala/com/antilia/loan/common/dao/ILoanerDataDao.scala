@@ -29,7 +29,7 @@ trait ILoanerDataDao extends IDao[LoanerData] {
     * @param data
     * @return
     */
-  def storeLoanDataAfterLoanGrated(data: java.util.List[LoanerData]): Unit
+  def storeLoanDataAfterLoanGrated(data: java.util.Collection[LoanerData]): Unit
 
   /**
     * Revert changes.
@@ -37,6 +37,6 @@ trait ILoanerDataDao extends IDao[LoanerData] {
     * @param data
     * @return
     */
-  def revertLoanDataAfterLoanGrated(data: java.util.List[LoanerData]): Unit
+  def revertLoanDataAfterLoanGrated(data: java.util.Collection[LoanerData]): Unit
 
 }
