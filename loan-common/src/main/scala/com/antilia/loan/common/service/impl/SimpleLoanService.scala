@@ -3,8 +3,8 @@ package com.antilia.loan.common.service.impl
 import java.util
 import java.util.Date
 
-import com.antilia.loan.common.dao.ILoanerDataDao
-import com.antilia.loan.common.domain.{LoanAnswer, LoanRequest, LoanerData}
+import com.antilia.loan.common.dao.{ILoanAnswerDao, ILoanerDataDao, IUserDao}
+import com.antilia.loan.common.domain.{LoanAnswer, LoanRequest, LoanerData, User, UserRole}
 import com.antilia.loan.common.service.{ILoanService, LoanComputationException}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -25,8 +25,22 @@ class SimpleLoanService extends ILoanService {
   @Autowired
   var loanerDataDao: ILoanerDataDao = _
 
+  @Autowired
+  var usersDao: IUserDao = _
 
-  override def requestLoan(request: LoanRequest): LoanAnswer = {
+  @Autowired
+  var loanAnswerDao: ILoanAnswerDao = _
+
+  override def requestAnonymousLoan(request: LoanRequest): Option[LoanAnswer] = {
+    usersDao.loadBy(User.ANONYMOUS_USER, UserRole.anonymous_requester) match {
+      case Some(user) =>
+        request.setUser(user)
+        requestLoan(request)
+      case None => None
+    }
+  }
+
+  override def requestLoan(request: LoanRequest): Option[LoanAnswer] = {
     val answer = new LoanAnswer
     val usedLoaners = new util.HashSet[LoanerData]()
     var amount =  0L
@@ -62,8 +76,10 @@ class SimpleLoanService extends ILoanService {
     answer.setTotalPayment(totalRepayment)
     answer.setCurrency(request.getCurrency)
     answer.setMonthlyPayment(monthlyPayment)
+    answer.setUser(request.getUser)
     // update data on database
     loanerDataDao.storeLoanDataAfterLoanGrated(usedLoaners)
-    answer
+    loanAnswerDao.persist(answer)
+    Some(answer)
   }
 }

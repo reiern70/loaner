@@ -3,7 +3,7 @@ package com.antilia.loan.common.service.impl
 import java.util
 import java.util.{Comparator, Date}
 
-import com.antilia.loan.common.dao.ILoanerDataDao
+import com.antilia.loan.common.dao.{ILoanAnswerDao, ILoanerDataDao, IUserDao}
 import com.antilia.loan.common.domain.{Currency, LoanRequest, LoanerData}
 import org.junit.runner.RunWith
 import org.junit.{Assert, Before, Test}
@@ -21,6 +21,13 @@ class SimpleLoanServiceTest {
 
   @Mock
   var loanerDataDao: ILoanerDataDao = _
+
+  @Mock
+  var usersDao: IUserDao = _
+
+  @Mock
+  var loanAnswerDao: ILoanAnswerDao = _
+
   @InjectMocks
   var loanService: SimpleLoanService = _
 
@@ -46,11 +53,14 @@ class SimpleLoanServiceTest {
     loandRequest.setCurrency(Currency.BritishPounds)
     loandRequest.setPeriod(36)
     loandRequest.setRequestDate(new Date())
-    val answer = loanService.requestLoan(loandRequest)
-    Assert.assertEquals(0.07, answer.getRate, 0.0001)
-    Assert.assertEquals(30.78, answer.getMonthlyPayment, 0.01)
-    Assert.assertEquals(1108.04, answer.getTotalPayment, 0.01)
-    println(answer)
+    loanService.requestLoan(loandRequest) match {
+      case Some(answer) =>
+        Assert.assertEquals(0.07, answer.getRate, 0.0001)
+        Assert.assertEquals(30.78, answer.getMonthlyPayment, 0.01)
+        Assert.assertEquals(1108.04, answer.getTotalPayment, 0.01)
+        println(answer)
+      case None => Assert.fail("No asnwer provided")
+    }
   }
 
   /*

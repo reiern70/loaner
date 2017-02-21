@@ -11,6 +11,8 @@ class LoanComputationException(message: String) extends RuntimeException(message
 
 trait ILoanService {
 
-  def requestLoan(request: LoanRequest): LoanAnswer
+  def requestAnonymousLoan(request: LoanRequest): Option[LoanAnswer]
+
+  def requestLoan(request: LoanRequest): Option[LoanAnswer]
 
 }

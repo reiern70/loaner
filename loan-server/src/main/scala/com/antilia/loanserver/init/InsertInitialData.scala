@@ -5,7 +5,7 @@ import javax.inject.Inject
 import javax.persistence.EntityManager
 
 import com.antilia.loan.common.dao.ILoanerDataDao
-import com.antilia.loan.common.domain.LoanerData
+import com.antilia.loan.common.domain.{LoanerData, User, UserRole}
 
 import scala.beans.BeanProperty
 import scala.util.Random
@@ -49,12 +49,20 @@ object InsertInitialData {
 /**
  * Script that inserts initial data.
  */
-class InsertInitialData extends EntityManagerAwareScript("InsertInitialData1") {
+class InsertInitialData extends EntityManagerAwareScript("InsertInitialData11") with IRunAlwaysScript {
 
   @Inject
   var iLoanerDataDao: ILoanerDataDao = _
 
   override protected def executeInTransaction(entityManager: EntityManager): Unit = {
+    if(usersDao.countAll == 0) {
+      val anonymous = new User
+      anonymous.setEmail(User.ANONYMOUS_USER)
+      anonymous.setName("anonymous")
+      anonymous.setLastName("anonymous")
+      anonymous.setRole(UserRole.anonymous_requester)
+      usersDao.persist(anonymous)
+    }
     if(iLoanerDataDao.countAll == 0) {
       for(a: LoanerData <- LoanerData.fromResources()) {
         val user = a.getUser

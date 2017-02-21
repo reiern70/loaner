@@ -28,22 +28,40 @@ class LoanerDataDao extends AbstractDao[LoanerData](classOf[LoanerData]) with IL
     */
   @Transactional(propagation = Propagation.REQUIRED)
   override def getNextAvailableLoaner(currency: Currency, previous: LoanerData): Option[LoanerData] = {
-    val query: TypedQuery[LoanerData] = getEntityManager.createQuery("select p from LoanerData p where p.currency=:currency and p.rate >=:rate sorted by p.lastLoanDate, p.rate asc", classOf[LoanerData])
-    query.setParameter("currency", currency)
-    query.setParameter("rate", previous.getRate)
-    query.setMaxResults(40)
-    val reults = query.getResultList
-    if(reults.size() == 0) {
-      return None
-    }
-    for(r <- reults) {
-      if(r != previous && !r.isBeingUsedForLoan) {
-        r.setBeingUsedForLoan(true)
-        update(r)
-        return Some(r)
+    if(previous != null) {
+      val query: TypedQuery[LoanerData] = getEntityManager.createQuery("select p from LoanerData p where p.currency=:currency and p.rate >=:rate order by p.lastLoanDate, p.rate asc", classOf[LoanerData])
+      query.setParameter("currency", currency)
+      query.setParameter("rate", previous.getRate)
+      query.setMaxResults(40)
+      val reults = query.getResultList
+      if(reults.size() == 0) {
+        return None
       }
+      for(r <- reults) {
+        if(r != previous && !r.isBeingUsedForLoan) {
+          r.setBeingUsedForLoan(true)
+          update(r)
+          return Some(r)
+        }
+      }
+      None
+    } else {
+      val query: TypedQuery[LoanerData] = getEntityManager.createQuery("select p from LoanerData p where p.currency=:currency order by p.lastLoanDate, p.rate asc", classOf[LoanerData])
+      query.setParameter("currency", currency)
+      query.setMaxResults(40)
+      val reults = query.getResultList
+      if(reults.size() == 0) {
+        return None
+      }
+      for(r <- reults) {
+        if(r != previous && !r.isBeingUsedForLoan) {
+          r.setBeingUsedForLoan(true)
+          update(r)
+          return Some(r)
+        }
+      }
+      None
     }
-    None
   }
 
   /**

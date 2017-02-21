@@ -3,8 +3,10 @@ package com.antilia.common.spring
 import java.util
 import javax.persistence.EntityManagerFactory
 
-import com.antilia.loan.common.dao.{ILoanerDataDao, IScriptsDao, IUserDao}
-import com.antilia.loan.common.dao.jpa.{LoanerDataDao, ScriptsDao, UserDao}
+import com.antilia.loan.common.dao.{ILoanAnswerDao, ILoanerDataDao, IScriptsDao, IUserDao}
+import com.antilia.loan.common.dao.jpa.{LoanAnswerDao, LoanerDataDao, ScriptsDao, UserDao}
+import com.antilia.loan.common.service.ILoanService
+import com.antilia.loan.common.service.impl.SimpleLoanService
 import com.antilia.loanserver.Jetty
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.service.jdbc.connections.internal.DatasourceConnectionProviderImpl
@@ -75,6 +77,11 @@ class SpringBootstrap {
 
   @Bean def getIScriptsDao: IScriptsDao = new ScriptsDao()
 
-  @Bean def get: ILoanerDataDao = new LoanerDataDao()
+  @Bean def getLoanerDataDao: ILoanerDataDao = new LoanerDataDao()
+
+  @Bean def getILoanAnswerDao: ILoanAnswerDao = new LoanAnswerDao()
+
+
+  @Bean def getILoanService: ILoanService = new SimpleLoanService()
 
 }

@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title><wicket:message key="loan.ask"/></title>
+    </head>
+    <body>
+        <strong><wicket:message key="loan.ask"/></strong>
+        <br/><br/>
+        <form wicket:id="form">
+            <p>
+                <label><wicket:message key="loan.form.amount"/></label>
+                <input wicket:id="amount"/>
+            </p>
+            <p>
+                <label><wicket:message key="loan.form.currency"/></label>
+                <select wicket:id="currency"></select>
+            </p>
+            <p>
+                <label><wicket:message key="loan.form.period"/></label>
+                <select wicket:id="period"></select>
+            </p>
+            <input type="submit" value="Submit"/>
+        </form>
+        <div wicket:id="feedback"></div>
+    </body>
+</html>
+

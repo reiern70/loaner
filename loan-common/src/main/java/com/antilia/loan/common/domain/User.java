@@ -13,6 +13,7 @@ import javax.persistence.UniqueConstraint;
         @UniqueConstraint(columnNames={"email","role"})})
 public class User extends EntityBase {
 
+    public static String ANONYMOUS_USER = "anonymous@loans.com";
     @Column(nullable = false)
     private String name;
     private String lastName;

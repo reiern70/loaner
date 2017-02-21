@@ -4,6 +4,7 @@ import javax.inject.Inject
 
 import com.antilia.loan.common.dao.IScriptsDao
 import com.antilia.loanserver.init.{IInitializingScript, InsertInitialData, ScriptsApplier}
+import com.antilia.loanserver.web.pages.LoanPage
 import de.agilecoders.wicket.core.Bootstrap
 import de.agilecoders.wicket.core.settings.BootstrapSettings
 import org.apache.wicket.Page
@@ -15,7 +16,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils
 
 class LoanWebApplication extends WebApplication {
 
-  override def getHomePage: Class[_ <: Page] = classOf[HomePage]
+  override def getHomePage: Class[_ <: Page] = classOf[LoanPage]
 
 
   var scripts: List[IInitializingScript] = _
